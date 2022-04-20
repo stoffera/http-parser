@@ -86,7 +86,7 @@ http_parser_g.o: http_parser.c http_parser.h Makefile
 	$(CC) $(CPPFLAGS_DEBUG) $(CFLAGS_DEBUG) -c http_parser.c -o $@
 
 test_fast: http_parser.o test.o http_parser.h
-	$(CC) $(CFLAGS_FAST) $(LDFLAGS) http_parser.o test.o -o $@
+	$(CC) $(CFLAGS_DEBUG) $(LDFLAGS) http_parser.o test.o -o $@
 
 test.o: test.c http_parser.h Makefile
 	$(CC) $(CPPFLAGS_FAST) $(CFLAGS_FAST) -c test.c -o $@
@@ -98,7 +98,7 @@ bench.o: bench.c http_parser.h Makefile
 	$(CC) $(CPPFLAGS_BENCH) $(CFLAGS_BENCH) -c bench.c -o $@
 
 http_parser.o: http_parser.c http_parser.h Makefile
-	$(CC) $(CPPFLAGS_FAST) $(CFLAGS_FAST) -c http_parser.c
+	$(CC) $(CPPFLAGS_DEBUG) $(CFLAGS_DEBUG) -c http_parser.c
 
 test-run-timed: test_fast
 	while(true) do time $(HELPER) ./test_fast$(BINEXT) > /dev/null; done
@@ -131,8 +131,8 @@ tags: http_parser.c http_parser.h test.c
 	ctags $^
 
 install: library
-	$(INSTALL) -D  http_parser.h $(DESTDIR)$(INCLUDEDIR)/http_parser.h
-	$(INSTALL) -D $(LIBNAME) $(DESTDIR)$(LIBDIR)/$(LIBNAME)
+	$(INSTALL)  -d http_parser.h $(DESTDIR)$(INCLUDEDIR)/http_parser.h
+	$(INSTALL) -d $(LIBNAME) $(DESTDIR)$(LIBDIR)/$(LIBNAME)
 	ln -sf $(LIBNAME) $(DESTDIR)$(LIBDIR)/$(SONAME)
 	ln -sf $(LIBNAME) $(DESTDIR)$(LIBDIR)/$(SOLIBNAME).$(SOEXT)
 
